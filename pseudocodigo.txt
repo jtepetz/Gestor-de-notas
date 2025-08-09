@@ -1,3 +1,14 @@
+# Diseño del menú principal
+
+Estructura del menú:
+1. Se mostrará un título y una lista de opciones numeradas (mínimo 5).
+2. El usuario elegirá una opción escribiendo un número.
+3. Un bucle repetitivo mantendrá el menú activo hasta que el usuario seleccione "Salir".
+4. Cada opción estará controlada por condicionales (SI / SINO SI / SINO).
+5. Por ahora, las acciones se representarán con marcadores de posición <acción>, que luego se reemplazarán con la lógica en Python.
+
+Pseudocódigo:
+
 INICIO
 
     MIENTRAS VERDADERO HACER
