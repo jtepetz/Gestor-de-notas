@@ -1,0 +1,31 @@
+INICIO
+
+    MIENTRAS VERDADERO HACER
+        IMPRIMIR "=============================="
+        IMPRIMIR "  GESTOR DE NOTAS ACADÉMICAS  "
+        IMPRIMIR "=============================="
+        IMPRIMIR "1. Registrar nuevo curso y nota"
+        IMPRIMIR "2. Mostrar todas las notas"
+        IMPRIMIR "3. Calcular promedio general"
+        IMPRIMIR "4. Buscar nota de un curso"
+        IMPRIMIR "5. Salir"
+        IMPRIMIR "Seleccione una opción: "
+        LEER opcion
+
+        SI opcion = 1 ENTONCES
+            <acción registrar curso y nota>
+        SINO SI opcion = 2 ENTONCES
+            <acción mostrar todas las notas>
+        SINO SI opcion = 3 ENTONCES
+            <acción calcular promedio>
+        SINO SI opcion = 4 ENTONCES
+            <acción buscar nota de un curso>
+        SINO SI opcion = 5 ENTONCES
+            IMPRIMIR "Saliendo del sistema..."
+            SALIR DEL BUCLE
+        SINO
+            IMPRIMIR "Opción no válida, intente de nuevo."
+        FIN_SI
+    FIN_MIENTRAS
+
+FIN
