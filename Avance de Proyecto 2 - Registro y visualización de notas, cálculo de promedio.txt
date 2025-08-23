@@ -1,0 +1,42 @@
+INICIO
+    // Gestor de Notas - Avance 02
+    // Este programa permite registrar varias notas y calcular su promedio
+
+    // Declaración de variables
+    listaNotas ← []      // Lista vacía para guardar notas
+    nota ← 0             // Variable para leer cada nota
+    continuar ← "SI"     // Control para seguir registrando
+
+    // Registrar notas
+    MIENTRAS continuar = "SI" HACER
+        IMPRIMIR "Ingrese una nota (0 - 100): "
+        LEER nota
+
+        // Validación: verificar que sea numérica y válida
+        SI nota >= 0 Y nota <= 100 ENTONCES
+            // Agregar la nota a la lista
+            listaNotas.AGREGAR(nota)
+            IMPRIMIR "Nota registrada correctamente."
+        SINO
+            IMPRIMIR "Error: la nota debe ser un número entre 0 y 100."
+        FIN_SI
+
+        // Preguntar si desea ingresar otra nota
+        IMPRIMIR "¿Desea ingresar otra nota? (SI/NO): "
+        LEER continuar
+    FIN_MIENTRAS
+
+    // Calcular promedio
+    SI listaNotas.LONGITUD > 0 ENTONCES
+        suma ← 0
+        PARA i ← 1 HASTA listaNotas.LONGITUD HACER
+            suma ← suma + listaNotas[i]
+        FIN_PARA
+
+        promedio ← suma / listaNotas.LONGITUD
+        IMPRIMIR "El promedio de las notas es: ", promedio
+    SINO
+        IMPRIMIR "No se registraron notas, no es posible calcular el promedio."
+    FIN_SI
+
+FIN
