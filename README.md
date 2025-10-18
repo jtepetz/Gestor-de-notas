@@ -8,7 +8,7 @@ Su objetivo principal es brindar una herramienta sencilla pero funcional que per
 
 ## 🎯 Requisitos del Sistema (Avance 01)
 
-### 💻 Funcionalidades Implementadas (Hasta Avance 03)
+### 💻 Funcionalidades Implementadas (Hasta Avance 04)
 
 | ID | Funcionalidad | Estado |
 | :--- | :--- | :--- |
@@ -16,7 +16,7 @@ Su objetivo principal es brindar una herramienta sencilla pero funcional que per
 | **F2** | Mostrar todas las notas registradas. | **IMPLEMENTADO** (Avance 2) |
 | **F3** | Calcular y mostrar el promedio general. | **IMPLEMENTADO** (Avance 2) |
 | **F4** | Actualizar nota de un curso específico. | **IMPLEMENTADO** (Avance 3) |
-| F5 | Eliminar curso del registro. | Pendiente (Avance 4) |
+| **F5** | Eliminar curso del registro. | **IMPLEMENTADO** (Avance 4) |
 | F6 | Ordenar notas (Burbuja / Inserción). | Pendiente (Avance 5) |
 
 ### ⚙️ Requisitos No Funcionales
@@ -24,18 +24,24 @@ Su objetivo principal es brindar una herramienta sencilla pero funcional que per
 * El sistema se ejecuta en **consola** utilizando el lenguaje **Python**.
 * No se utilizan librerías externas.
 * La lógica del menú principal utiliza **bucles** y **condicionales**.
-* El diseño lógico inicial se realizó en **pseudocódigo** (`pseudocodigo.txt`).
+* El código está **modularizado** en funciones (implementado en Avance 4).
+* El diseño lógico se realizó en **pseudocódigo** (`pseudocodigo.txt`).
 
 ---
 
-## 🚀 Lógica Implementada (Avances 02 y 03)
+## 🚀 Lógica Implementada (Avances 02, 03 y 04)
 
-El código (`Prototipo - Python.py`) implementa la lógica de gestión de datos, utilizando **listas paralelas** (`cursos` y `notas`) para mantener la información asociada.
+El código (`Prototipo - Python.py`) implementa la gestión de datos, utilizando **listas paralelas** (`cursos` y `notas`) para mantener la información asociada.
 
-### Avance 02: Registro y Promedio
-* **Listas y Bucles:** Se utiliza un bucle `MIENTRAS` para el menú principal y bucles `PARA` para recorrer las listas y calcular el promedio.
-* **Validación:** Se valida que las notas ingresadas estén en el rango de 0 a 100.
+### Avance 04: Modularización y Eliminación de Datos
 
-### Avance 03: Búsqueda y Actualización (Búsqueda Lineal)
-* **Búsqueda Lineal:** Se implementa un bucle (`PARA` o `MIENTRAS`) dentro de la función de actualización. Este bucle recorre secuencialmente la lista de `cursos` (desde el índice 0 hasta N-1) buscando una coincidencia exacta con el nombre ingresado por el usuario.
-* **Contadores y Condicionales:** Al encontrar el curso (usando un **condicional** `SI`), se utiliza el **índice** (`i`) del contador del bucle para acceder y modificar la nota correspondiente en la lista `notas` (`notas[i] = nueva_nota`).
+#### 1. Modularización con Funciones
+Todo el código ha sido **modularizado** utilizando la estructura `def` en Python (subrutinas en pseudocódigo). Esto mejora la organización, legibilidad y reutilización del código, separando la lógica del menú de la lógica de las operaciones (CRUD).
+
+#### 2. Eliminación de Datos (Búsqueda Lineal)
+* **Proceso:** La función de eliminación realiza primero una **Búsqueda Lineal** (misma lógica que en el Avance 3) para encontrar la posición (índice) del curso que el usuario desea borrar.
+* **Acción:** Una vez encontrado el índice, se utiliza el método nativo del lenguaje (`.pop()` o `del`) para **remover el elemento de la lista de cursos y la lista de notas** en esa posición específica, asegurando que los datos queden sincronizados.
+
+### Avances Anteriores
+* **Avance 03:** Implementación de la **Actualización de Datos** utilizando un bucle para la **Búsqueda Lineal**.
+* **Avance 02:** Implementación de **Registro**, **Visualización** y **Cálculo de Promedio**, incluyendo validación de notas.
