@@ -1,53 +1,39 @@
 # 📚 Gestor de Notas Académicas
 
-El "Gestor de Notas Académicas" es un sistema diseñado para facilitar el registro, consulta y administración de las calificaciones obtenidas por un estudiante a lo largo de sus cursos.
+El "Gestor de Notas Académicas" es un sistema de consola diseñado para facilitar el registro, consulta, modificación y administración de calificaciones. Su objetivo es proporcionar una herramienta sencilla y funcional para que estudiantes o académicos lleven un control ordenado de sus cursos, notas y rendimiento general.
 
-Su objetivo principal es brindar una herramienta sencilla pero funcional que permita llevar un control ordenado de las materias cursadas, las notas obtenidas y los promedios calculados. Este sistema está dirigido a cualquier persona que necesite organizar y centralizar su información académica para evaluar su rendimiento.
+Este prototipo implementa diversas estructuras de datos y algoritmos fundamentales para demostrar la capacidad de gestión de información en un entorno básico.
 
 ---
 
-## 🎯 Requisitos del Sistema (Avance 01)
+## 🎯 Requisitos del Sistema (Estado Final)
 
-### 💻 Funcionalidades Implementadas (Hasta Avance 05)
+### 💻 Funcionalidades Implementadas (Avances 1-5)
 
-| ID | Funcionalidad | Estado |
-| :--- | :--- | :--- |
-| **F1** | Registrar un nuevo curso y su nota. | **IMPLEMENTADO** (Avance 2) |
-| **F2** | Mostrar todas las notas registradas. | **IMPLEMENTADO** (Avance 2) |
-| **F3** | Calcular y mostrar el promedio general. | **IMPLEMENTADO** (Avance 2) |
-| **F4** | Actualizar nota de un curso específico. | **IMPLEMENTADO** (Avance 3) |
-| **F5** | Eliminar curso del registro. | **IMPLEMENTADO** (Avance 4) |
-| **F6** | Ordenar notas (Burbuja / Inserción). | **IMPLEMENTADO** (Avance 5) |
+| ID | Funcionalidad | Estado | Descripción |
+| :--- | :--- | :--- | :--- |
+| **F1** | Registrar nuevo curso y nota. | **IMPLEMENTADO** | Añade nuevos registros a las listas paralelas. |
+| **F2** | Mostrar todas las notas. | **IMPLEMENTADO** | Muestra el contenido actual de las listas. |
+| **F3** | Calcular promedio general. | **IMPLEMENTADO** | Suma de notas dividido por el total de cursos. |
+| **F4** | Actualizar nota de curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para modificar un registro existente. |
+| **F5** | Eliminar curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para remover datos sincronizadamente. |
+| **F6** | Ordenar notas (Burbuja / Inserción). | **IMPLEMENTADO** | Implementación de dos algoritmos $\mathbf{O}(n^2)$ con intercambio paralelo de datos. |
+| **F7** | Mostrar Historial (Pila). | **IMPLEMENTADO** | Usa una estructura LIFO para auditar las últimas acciones. |
 
 ### ⚙️ Requisitos No Funcionales
 
 * El sistema se ejecuta en **consola** utilizando el lenguaje **Python**.
-* No se utilizan librerías externas.
-* La lógica del menú principal utiliza **bucles** y **condicionales**.
-* El código está **modularizado** en funciones (implementado en Avance 4).
-* Se utilizan **Pilas (Stack)** y **Colas (Queue)** para estructuras de datos avanzadas (implementado en Avance 5).
-* El diseño lógico se realizó en **pseudocódigo** (`pseudocodigo.txt`).
+* No se utilizan librerías externas o frameworks.
+* El código está completamente **modularizado** en funciones (subrutinas).
+* Se emplean **listas paralelas**, **Pilas (LIFO)** y **Búsqueda Lineal**.
+* El diseño lógico completo se encuentra en el archivo **`pseudocodigo.txt`**.
 
 ---
 
-## 🚀 Lógica Implementada (Avances 02, 03, 04 y 05)
+## 🚀 Lógica Implementada (Resumen Técnico)
 
-El código (`Prototipo - Python.py`) implementa la gestión de datos, utilizando **listas paralelas** (`cursos` y `notas`) para mantener la información asociada.
+El código final (\texttt{Prototipo - Python.py}) se basa en los siguientes principios:
 
-### Avance 05: Estructuras Avanzadas y Ordenamiento
-
-#### 1. Estructuras de Datos (Pila y Cola)
-* **Pila (Historial de Acciones):** Se utiliza una lista para simular una estructura **LIFO** (Last-In, First-Out). Cada acción importante (registro, actualización, eliminación, ordenamiento) se "apila" (`.append()`) en el `Historial_Pila`. Esto permite auditar las últimas operaciones realizadas.
-* **Cola (Lista de Revisión):** (Se debe incluir si se implementó en Python. Si no, ajustar la descripción). Se puede usar una lista para simular la estructura **FIFO** (First-In, First-Out) para una lista de cursos pendientes de revisión.
-
-#### 2. Algoritmos de Ordenamiento
-Se implementaron dos funciones para ordenar los datos:
-* **Ordenamiento por Burbuja (Bubble Sort):** Un algoritmo simple que compara pares de elementos adyacentes y los intercambia si están en el orden incorrecto, repitiendo el proceso hasta que toda la lista esté ordenada.
-* **Ordenamiento por Inserción (Insertion Sort):** Un algoritmo que construye la lista ordenada final un elemento a la vez, insertando cada nuevo elemento en la posición correcta dentro de la sublista ya ordenada.
-* **Asociación de Datos:** En ambos algoritmos, cada vez que se intercambian dos notas, se realiza un intercambio simultáneo en la lista de `cursos` para garantizar que la nota y el curso permanezcan correctamente asociados.
-
-### Avances Anteriores
-
-* **Avance 04 (Modularización y Eliminación):** El código fue dividido en funciones (`def`) para cada operación (Registrar, Actualizar, Eliminar). Se implementó la **Eliminación de Datos** utilizando la Búsqueda Lineal para encontrar el índice y el método `.pop()` para remover el curso y la nota.
-* **Avance 03 (Actualización):** Se implementó la función de **Actualizar Datos** usando un bucle (`PARA` o `MIENTRAS`) para realizar una **Búsqueda Lineal** por el nombre del curso.
-* **Avance 02 (Base):** Implementación de **Registro**, **Visualización** y **Cálculo de Promedio**, incluyendo validación de notas (0-100).
+1.  **Estructura de Datos:** Uso de \textbf{Listas Paralelas} (\texttt{cursos} y \texttt{notas}) para mantener la asociación, y una \textbf{Pila} (\texttt{historial\_pila}) implementada con la lógica LIFO (\texttt{.append()} y \texttt{reversed()}) para el registro de acciones.
+2.  **Búsqueda:** Todas las operaciones de modificación/eliminación (F4, F5) se basan en la \textbf{Búsqueda Lineal} (\texttt{enumerate}) para obtener el índice preciso del elemento.
+3.  **Algoritmos $\mathbf{O}(n^2)$:** Se implementaron los algoritmos **Burbuja** e **Inserción** para ordenar la lista de notas. Ambos garantizan el \textbf{intercambio paralelo} de datos entre \texttt{cursos} y \texttt{notas} en cada operación de *swap*.
