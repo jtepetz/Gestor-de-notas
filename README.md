@@ -17,7 +17,7 @@ Este prototipo implementa diversas estructuras de datos y algoritmos fundamental
 | **F3** | Calcular promedio general. | **IMPLEMENTADO** | Suma de notas dividido por el total de cursos. |
 | **F4** | Actualizar nota de curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para modificar un registro existente. |
 | **F5** | Eliminar curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para remover datos sincronizadamente. |
-| **F6** | Ordenar notas (Burbuja / Inserción). | **IMPLEMENTADO** | Implementación de dos algoritmos $\mathbf{O}(n^2)$ con intercambio paralelo de datos. |
+| **F6** | Ordenar notas (Burbuja / Inserción). | **IMPLEMENTADO** | Implementación de dos algoritmos de complejidad O(n²) con intercambio paralelo de datos. |
 | **F7** | Mostrar Historial (Pila). | **IMPLEMENTADO** | Usa una estructura LIFO para auditar las últimas acciones. |
 
 ### ⚙️ Requisitos No Funcionales
@@ -32,8 +32,8 @@ Este prototipo implementa diversas estructuras de datos y algoritmos fundamental
 
 ## 🚀 Lógica Implementada (Resumen Técnico)
 
-El código final (\texttt{Prototipo - Python.py}) se basa en los siguientes principios:
+El código final (`Prototipo - Python.py`) se basa en los siguientes principios:
 
-1.  **Estructura de Datos:** Uso de \textbf{Listas Paralelas} (\texttt{cursos} y \texttt{notas}) para mantener la asociación, y una \textbf{Pila} (\texttt{historial\_pila}) implementada con la lógica LIFO (\texttt{.append()} y \texttt{reversed()}) para el registro de acciones.
-2.  **Búsqueda:** Todas las operaciones de modificación/eliminación (F4, F5) se basan en la \textbf{Búsqueda Lineal} (\texttt{enumerate}) para obtener el índice preciso del elemento.
-3.  **Algoritmos $\mathbf{O}(n^2)$:** Se implementaron los algoritmos **Burbuja** e **Inserción** para ordenar la lista de notas. Ambos garantizan el \textbf{intercambio paralelo} de datos entre \texttt{cursos} y \texttt{notas} en cada operación de *swap*.
+1.  **Estructura de Datos:** Uso de **Listas Paralelas** (`cursos` y `notas`) para mantener la asociación, y una **Pila** (`historial_pila`) implementada con la lógica LIFO (Last-In, First-Out) para el registro de acciones.
+2.  **Búsqueda:** Todas las operaciones de modificación/eliminación (F4, F5) se basan en la **Búsqueda Lineal** (`enumerate` en Python) para obtener el índice preciso del elemento.
+3.  **Algoritmos de Ordenamiento:** Se implementaron los algoritmos **Burbuja** e **Inserción** para ordenar la lista de notas. Ambos garantizan el **intercambio paralelo** de datos entre `cursos` y `notas` en cada operación de *swap*, manteniendo la complejidad de tiempo en **O(n²)**.
