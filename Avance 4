@@ -1,0 +1,30 @@
+// Ejemplo de modularización: Se crea una función específica para la tarea.
+SUBRUTINA Subrutina_Eliminar_Curso(ListaCursos, ListaNotas)
+    IMPRIMIR "--- Eliminación de Curso ---"
+    IMPRIMIR "Ingrese el nombre del curso a eliminar:"
+    LEER NombreAEliminar
+
+    // Variables de control
+    Encontrado = FALSO
+    ContadorIndice = 0 // Usado para rastrear la posición
+
+    // Búsqueda Lineal: encontrar la posición del curso
+    MIENTRAS ContadorIndice < TAMAÑO(ListaCursos) HACER
+        SI ListaCursos[ContadorIndice] ES IGUAL A NombreAEliminar ENTONCES
+            Encontrado = VERDADERO
+            
+            // Eliminación de datos de las dos listas
+            ELIMINAR_ELEMENTO(ListaCursos, ContadorIndice) // Elimina el nombre del curso
+            ELIMINAR_ELEMENTO(ListaNotas, ContadorIndice)  // Elimina la nota asociada
+            
+            IMPRIMIR "El curso '", NombreAEliminar, "' ha sido eliminado exitosamente."
+            ROMPER MIENTRAS 
+        FIN_SI
+        ContadorIndice = ContadorIndice + 1 
+    FIN_MIENTRAS
+
+    // Condicional si no se encontró
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Error: El curso '", NombreAEliminar, "' no fue encontrado en el registro."
+    FIN_SI
+FIN_SUBRUTINA
