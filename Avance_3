@@ -1,0 +1,38 @@
+SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas)
+    IMPRIMIR "--- Actualización de Nota ---"
+    IMPRIMIR "Ingrese el nombre del curso a actualizar:"
+    LEER NombreABuscar
+
+    // Variables de control
+    Encontrado = FALSO
+    ContadorIndice = 0 // Usado como contador/índice 
+
+    // Búsqueda Lineal: recorre toda la lista de cursos
+    MIENTRAS ContadorIndice < TAMAÑO(ListaCursos) HACER
+        SI ListaCursos[ContadorIndice] ES IGUAL A NombreABuscar ENTONCES
+            Encontrado = VERDADERO
+            
+            // Condicional para actualizar 
+            IMPRIMIR "Curso encontrado. Nota actual: ", ListaNotas[ContadorIndice]
+            IMPRIMIR "Ingrese la nueva nota (0-100):"
+            LEER NuevaNota
+            
+            // Validación (ejemplo de condicional )
+            SI NuevaNota ES MAYOR QUE 0 Y NuevaNota ES MENOR QUE 100 ENTONCES
+                ListaNotas[ContadorIndice] = NuevaNota // Actualización de datos 
+                IMPRIMIR "Nota de ", NombreABuscar, " actualizada exitosamente a ", NuevaNota
+            SINO
+                IMPRIMIR "Error: La nota ingresada no es válida. No se realizaron cambios."
+            FIN_SI
+            
+            // Salir del bucle una vez que se encuentra (optimización)
+            ROMPER MIENTRAS 
+        FIN_SI
+        ContadorIndice = ContadorIndice + 1 // Incremento del contador 
+    FIN_MIENTRAS
+
+    // Condicional si no se encontró 
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Error: El curso '", NombreABuscar, "' no fue encontrado en el registro."
+    FIN_SI
+FIN_SUBRUTINA
