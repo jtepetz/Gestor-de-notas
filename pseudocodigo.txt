@@ -1,222 +1,220 @@
-INICIO
-    // --------------------------------------------------------------------
-    // DECLARACIÓN E INICIALIZACIÓN DE ESTRUCTURAS DE DATOS (Avance 2 y 5)
-    // --------------------------------------------------------------------
-    Cursos = []          // Lista principal de cursos (string)
-    Notas = []           // Lista principal de notas (numerico)
-    Historial_Pila = []  // Pila (LIFO) para registrar acciones (string)
-    Opcion = 0           // Variable para el control del menú (numerico)
+# --------------------------------------------------------------------
+# GESTOR DE NOTAS ACADÉMICAS - PROTOTIPO FUNCIONAL COMPLETO (AVANCE 06)
+# Implementación unificada y final de Avances 1, 2, 3, 4 y 5
+# --------------------------------------------------------------------
+
+# Variables Globales (Estructuras de datos)
+cursos = []      # Lista principal de cursos
+notas = []       # Lista principal para notas
+historial_pila = [] # Pila (LIFO) para registrar acciones
+
+# =====================================================
+# FUNCIONES DE AYUDA Y ESTRUCTURAS DE DATOS (Avance 5)
+# =====================================================
+
+def apilar_accion(pila, accion):
+    """Simula la operación PUSH (APILAR) para el historial."""
+    pila.append(accion)
     
-    LLAMAR Subrutina_APILAR(Historial_Pila, "Sistema iniciado") // Registro inicial
+def mostrar_historial(pila):
+    """Muestra el historial de acciones registrado en la Pila (LIFO)."""
+    print("\n--- Historial de Acciones (Pila - LIFO) ---")
+    if not pila:
+        print("El historial está vacío.")
+        return
     
-    // --------------------------------------------------------------------
-    // BUCLE PRINCIPAL DEL MENÚ (Avance 1)
-    // --------------------------------------------------------------------
-    MIENTRAS Opcion != 9 HACER 
-        IMPRIMIR "==================================="
-        IMPRIMIR "     GESTOR DE NOTAS ACADÉMICAS"
-        IMPRIMIR "==================================="
-        IMPRIMIR "1. Registrar nuevo curso y nota" 
-        IMPRIMIR "2. Mostrar todas las notas"       
-        IMPRIMIR "3. Calcular promedio general"     
-        IMPRIMIR "4. Actualizar nota de curso"      
-        IMPRIMIR "5. Eliminar curso"                
-        IMPRIMIR "6. Ordenar notas (Burbuja)"       
-        IMPRIMIR "7. Ordenar notas (Inserción)"     
-        IMPRIMIR "8. Mostrar Historial (Pila)"
-        IMPRIMIR "9. Salir"
-        IMPRIMIR "-----------------------------------"
+    # Mostrar del último al primero (LIFO)
+    for accion in reversed(pila):
+        print(f"-> {accion}")
 
-        LEER Opcion
 
-        // Estructura Condicional para dirigir el flujo
-        SI Opcion ES 1 ENTONCES
-            LLAMAR Subrutina_Registrar_Nota(Cursos, Notas, Historial_Pila)
-        SINO_SI Opcion ES 2 ENTONCES
-            LLAMAR Subrutina_Mostrar_Notas(Cursos, Notas)
-        SINO_SI Opcion ES 3 ENTONCES
-            LLAMAR Subrutina_Calcular_Promedio(Notas)
-        SINO_SI Opcion ES 4 ENTONCES
-            LLAMAR Subrutina_Actualizar_Nota(Cursos, Notas, Historial_Pila)
-        SINO_SI Opcion ES 5 ENTONCES
-            LLAMAR Subrutina_Eliminar_Curso(Cursos, Notas, Historial_Pila)
-        SINO_SI Opcion ES 6 ENTONCES
-            LLAMAR Subrutina_Ordenar_Burbuja(Cursos, Notas, Historial_Pila)
-        SINO_SI Opcion ES 7 ENTONCES
-            LLAMAR Subrutina_Ordenar_Insercion(Cursos, Notas, Historial_Pila)
-        SINO_SI Opcion ES 8 ENTONCES
-            LLAMAR Subrutina_Mostrar_Historial(Historial_Pila)
-        SINO_SI Opcion ES 9 ENTONCES
-            IMPRIMIR "Saliendo del sistema..."
-        SINO
-            IMPRIMIR "Opción no válida."
-        FIN_SI
-    FIN_MIENTRAS
+# =====================================================
+# FUNCIONES CRUD Y PROMEDIO (Avances 2, 3 y 4)
+# =====================================================
 
-// --------------------------------------------------------------------
-// DEFINICIÓN DE SUBRUTINAS FUNCIONALES
-// --------------------------------------------------------------------
+def registrar_nota(cursos, notas, pila):
+    """Registra un nuevo curso y nota con validación."""
+    print("\n--- Registrar Curso ---")
+    nombre_curso = input("Nombre del curso: ")
+    try:
+        nueva_nota = float(input("Nota (0-100): "))
+        if 0 <= nueva_nota <= 100:
+            cursos.append(nombre_curso)
+            notas.append(nueva_nota)
+            print(f"Curso '{nombre_curso}' registrado.")
+            apilar_accion(pila, f"Registró {nombre_curso}") 
+        else:
+            print("Error: La nota debe estar entre 0 y 100.")
+    except ValueError:
+        print("Error: La nota debe ser un valor numérico.")
 
-// SUBRUTINA DE REGISTRO (Avance 2)
-SUBRUTINA Subrutina_Registrar_Nota(ListaCursos, ListaNotas, PilaHistorial)
-    LEER NombreCurso
-    LEER NuevaNota
-    SI NuevaNota ES NUMERICA Y NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
-        AGREGAR(ListaCursos, NombreCurso)
-        AGREGAR(ListaNotas, NuevaNota)
-        LLAMAR Subrutina_APILAR(PilaHistorial, "Registró " + NombreCurso) 
-        IMPRIMIR "Curso registrado."
-    SINO
-        IMPRIMIR "Error: Nota no válida."
-    FIN_SI
-FIN_SUBRUTINA
+def mostrar_notas(cursos, notas):
+    """Muestra todos los cursos y sus notas."""
+    print("\n--- Cursos Registrados ---")
+    if not cursos:
+        print("No hay cursos registrados.")
+        return
+    for curso, nota in zip(cursos, notas):
+        print(f"Curso: {curso:<20} | Nota: {nota:.2f}")
 
-// SUBRUTINA DE ACTUALIZACIÓN (Avance 3: Búsqueda Lineal)
-SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas, PilaHistorial)
-    LEER NombreABuscar
-    Encontrado = FALSO
-    i = 0 
-    MIENTRAS i < TAMAÑO(ListaCursos) Y Encontrado ES FALSO HACER 
-        SI ListaCursos[i] ES IGUAL A NombreABuscar ENTONCES
-            LEER NuevaNota
-            SI NuevaNota ES NUMERICA Y NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
-                ListaNotas[i] = NuevaNota // Actualización de datos
-                LLAMAR Subrutina_APILAR(PilaHistorial, "Actualizó nota de " + NombreABuscar)
-                IMPRIMIR "Nota actualizada."
-                Encontrado = VERDADERO
-            SINO
-                IMPRIMIR "Error: Nueva nota no válida."
-            FIN_SI
-        FIN_SI
-        i = i + 1 
-    FIN_MIENTRAS
-    SI Encontrado ES FALSO ENTONCES
-        IMPRIMIR "Curso no encontrado."
-    FIN_SI
-FIN_SUBRUTINA
+def calcular_promedio(notas):
+    """Calcula y muestra el promedio general."""
+    if not notas:
+        print("No hay notas para calcular promedio.")
+        return
+    promedio = sum(notas) / len(notas)
+    print(f"\n--- Promedio General ---")
+    print(f"El promedio general es: {promedio:.2f}")
 
-// SUBRUTINA DE ELIMINACIÓN (Avance 4: Búsqueda Lineal + Pop)
-SUBRUTINA Subrutina_Eliminar_Curso(ListaCursos, ListaNotas, PilaHistorial)
-    LEER NombreAEliminar
-    Encontrado = FALSO
-    i = 0 
-    MIENTRAS i < TAMAÑO(ListaCursos) Y Encontrado ES FALSO HACER
-        SI ListaCursos[i] ES IGUAL A NombreAEliminar ENTONCES
-            ELIMINAR_ELEMENTO(ListaCursos, i) 
-            ELIMINAR_ELEMENTO(ListaNotas, i) // Eliminación sincronizada
-            LLAMAR Subrutina_APILAR(PilaHistorial, "Eliminó " + NombreAEliminar)
-            IMPRIMIR "Curso eliminado."
-            Encontrado = VERDADERO
-        FIN_SI
-        i = i + 1 
-    FIN_MIENTRAS
-    SI Encontrado ES FALSO ENTONCES
-        IMPRIMIR "Curso no encontrado."
-    FIN_SI
-FIN_SUBRUTINA
+def actualizar_nota(cursos, notas, pila):
+    """Busca un curso por nombre usando Búsqueda Lineal y permite actualizar su nota."""
+    print("\n--- Actualizar Nota ---")
+    nombre_a_buscar = input("Ingrese el nombre del curso a actualizar: ")
+    
+    encontrado = False
+    for i, curso in enumerate(cursos): 
+        if curso.lower() == nombre_a_buscar.lower():
+            print(f"Curso encontrado. Nota actual: {notas[i]}")
+            try:
+                nueva_nota = float(input("Ingrese la nueva nota (0-100): "))
+                if 0 <= nueva_nota <= 100:
+                    notas[i] = nueva_nota # Actualización de datos
+                    print(f"Nota de '{nombre_a_buscar}' actualizada a {nueva_nota}.")
+                    apilar_accion(pila, f"Actualizó nota de {nombre_a_buscar}")
+                else:
+                    print("Error: La nota ingresada no es válida.")
+            except ValueError:
+                print("Error: La nota debe ser un valor numérico.")
+            encontrado = True
+            break # Sale del bucle al encontrar
+            
+    if not encontrado:
+        print(f"Error: El curso '{nombre_a_buscar}' no fue encontrado.")
 
-// --------------------------------------------------------------------
-// DEFINICIÓN DE SUBRUTINAS DE ORDENAMIENTO (Avance 5)
-// --------------------------------------------------------------------
+def eliminar_curso(cursos, notas, pila):
+    """Busca un curso y lo elimina del registro con eliminación sincronizada."""
+    print("\n--- Eliminar Curso ---")
+    nombre_a_eliminar = input("Ingrese el nombre del curso a eliminar: ")
+    
+    encontrado = False
+    for i, curso in enumerate(cursos):
+        if curso.lower() == nombre_a_eliminar.lower():
+            # Eliminación de las dos listas en el mismo índice (pop)
+            cursos.pop(i)
+            notas.pop(i)
+            print(f"El curso '{nombre_a_eliminar}' ha sido eliminado exitosamente.")
+            apilar_accion(pila, f"Eliminó {nombre_a_eliminar}")
+            encontrado = True
+            break # Sale del bucle al encontrar
+            
+    if not encontrado:
+        print(f"Error: El curso '{nombre_a_eliminar}' no fue encontrado.")
 
-// ALGORITMO DE ORDENAMIENTO POR BURBUJA (O(n^2))
-SUBRUTINA Subrutina_Ordenar_Burbuja(ListaCursos, ListaNotas, PilaHistorial)
-    n = TAMAÑO(ListaNotas)
-    SI n <= 1 ENTONCES
-        IMPRIMIR "No hay suficientes datos para ordenar."
-        RETORNAR
-    FIN_SI
-    PARA i DESDE 0 HASTA n-2 HACER
-        PARA j DESDE 0 HASTA n-2-i HACER
-            SI ListaNotas[j] > ListaNotas[j+1] ENTONCES
-                // Swap de NOTAS
-                AuxNota = ListaNotas[j]
-                ListaNotas[j] = ListaNotas[j+1]
-                ListaNotas[j+1] = AuxNota
-                // Swap de CURSOS (PARALELO)
-                AuxCurso = ListaCursos[j]
-                ListaCursos[j] = ListaCursos[j+1]
-                ListaCursos[j+1] = AuxCurso
-            FIN_SI
-        FIN_PARA
-    FIN_PARA
-    LLAMAR Subrutina_APILAR(PilaHistorial, "Ordenó por Burbuja")
-    IMPRIMIR "Notas ordenadas por Burbuja (Ascendente)."
-FIN_SUBRUTINA
+# =====================================================
+# FUNCIONES DE ORDENAMIENTO (Avance 5)
+# =====================================================
 
-// ALGORITMO DE ORDENAMIENTO POR INSERCIÓN (O(n^2))
-SUBRUTINA Subrutina_Ordenar_Insercion(ListaCursos, ListaNotas, PilaHistorial)
-    n = TAMAÑO(ListaNotas)
-    SI n <= 1 ENTONCES
-        IMPRIMIR "No hay suficientes datos para ordenar."
-        RETORNAR
-    FIN_SI
-    PARA i DESDE 1 HASTA n-1 HACER
-        ClaveNota = ListaNotas[i]
-        ClaveCurso = ListaCursos[i]
+def ordenar_burbuja(cursos, notas, pila):
+    """Ordenamiento por Burbuja (Bubble Sort) con intercambio paralelo explícito."""
+    n = len(notas)
+    if n <= 1:
+        print("No hay suficientes elementos para ordenar.")
+        return
+        
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if notas[j] > notas[j + 1]: # Comparación de notas
+                # Swap de NOTAS usando auxiliar (coherente con pseudocódigo)
+                aux_nota = notas[j]
+                notas[j] = notas[j + 1]
+                notas[j + 1] = aux_nota
+                
+                # Swap de CURSOS (PARALELO)
+                aux_curso = cursos[j]
+                cursos[j] = cursos[j + 1]
+                cursos[j + 1] = aux_curso
+                
+    print("\nNotas ordenadas (ascendente) por Burbuja.")
+    apilar_accion(pila, "Ordenó por Burbuja")
+
+def ordenar_insercion(cursos, notas, pila):
+    """Ordenamiento por Inserción (Insertion Sort) con desplazamiento paralelo explícito."""
+    n = len(notas)
+    if n <= 1:
+        print("No hay suficientes elementos para ordenar.")
+        return
+        
+    for i in range(1, n):
+        clave_nota = notas[i]
+        clave_curso = cursos[i]
         j = i - 1
         
-        // Mueve elementos de la sublista ordenada que son mayores que la clave
-        MIENTRAS j >= 0 Y ListaNotas[j] > ClaveNota HACER
-            ListaNotas[j + 1] = ListaNotas[j]
-            ListaCursos[j + 1] = ListaCursos[j] // Desplazamiento paralelo
-            j = j - 1
-        FIN_MIENTRAS
+        while j >= 0 and notas[j] > clave_nota:
+            # Desplazamiento de NOTAS
+            notas[j + 1] = notas[j]
+            # Desplazamiento de CURSOS (paralelo)
+            cursos[j + 1] = cursos[j]
+            j -= 1
+            
+        # Inserción de la clave en su posición correcta
+        notas[j + 1] = clave_nota
+        cursos[j + 1] = clave_curso
         
-        // Inserta la clave en su posición correcta
-        ListaNotas[j + 1] = ClaveNota
-        ListaCursos[j + 1] = ClaveCurso // Inserción paralela
-    FIN_PARA
-    LLAMAR Subrutina_APILAR(PilaHistorial, "Ordenó por Inserción")
-    IMPRIMIR "Notas ordenadas por Inserción (Ascendente)."
-FIN_SUBRUTINA
+    print("\nNotas ordenadas (ascendente) por Inserción.")
+    apilar_accion(pila, "Ordenó por Inserción")
 
-// --------------------------------------------------------------------
-// DEFINICIÓN DE SUBRUTINAS DE SOPORTE Y LECTURA
-// --------------------------------------------------------------------
+# =====================================================
+# MENÚ PRINCIPAL (Avance 4 - Modularización)
+# =====================================================
 
-// SUBRUTINA DE VISUALIZACIÓN (Avance 2)
-SUBRUTINA Subrutina_Mostrar_Notas(ListaCursos, ListaNotas)
-    IMPRIMIR "--- Listado de Cursos ---"
-    SI TAMAÑO(ListaCursos) ES IGUAL A 0 ENTONCES
-        IMPRIMIR "No hay cursos registrados."
-        RETORNAR
-    FIN_SI
-    PARA i DESDE 0 HASTA TAMAÑO(ListaCursos) - 1 HACER
-        IMPRIMIR "Curso: " + ListaCursos[i] + " | Nota: " + ListaNotas[i]
-    FIN_PARA
-FIN_SUBRUTINA
+def menu_principal():
+    """Bucle principal del programa que maneja la interacción con el usuario."""
+    opcion = 0
+    
+    # Registro inicial
+    apilar_accion(historial_pila, "Inicio del sistema")
+    
+    while opcion != 9:
+        print("\n===================================")
+        print("     GESTOR DE NOTAS ACADÉMICAS")
+        print("===================================")
+        print("1. Registrar nuevo curso y nota")
+        print("2. Mostrar todas las notas")
+        print("3. Calcular promedio general")
+        print("4. Actualizar nota de curso")
+        print("5. Eliminar curso")
+        print("6. Ordenar notas (Burbuja)")
+        print("7. Ordenar notas (Inserción)")
+        print("8. Mostrar Historial (Pila)")
+        print("9. Salir")
+        print("-----------------------------------")
+        
+        try:
+            opcion = int(input("Seleccione una opción: "))
+            
+            if opcion == 1:
+                registrar_nota(cursos, notas, historial_pila)
+            elif opcion == 2:
+                mostrar_notas(cursos, notas)
+            elif opcion == 3:
+                calcular_promedio(notas)
+            elif opcion == 4:
+                actualizar_nota(cursos, notas, historial_pila)
+            elif opcion == 5:
+                eliminar_curso(cursos, notas, historial_pila)
+            elif opcion == 6:
+                ordenar_burbuja(cursos, notas, historial_pila)
+            elif opcion == 7:
+                ordenar_insercion(cursos, notas, historial_pila)
+            elif opcion == 8:
+                mostrar_historial(historial_pila)
+            elif opcion == 9:
+                print("\nSaliendo del sistema...")
+            else:
+                print("Opción no válida. Intente de nuevo.")
+        except ValueError:
+            print("Entrada no válida. Por favor, ingrese un número.")
 
-// SUBRUTINA DE PROMEDIO (Avance 2)
-SUBRUTINA Subrutina_Calcular_Promedio(ListaNotas)
-    SI TAMAÑO(ListaNotas) ES IGUAL A 0 ENTONCES
-        IMPRIMIR "No hay notas para calcular promedio."
-        RETORNAR
-    FIN_SI
-    Suma = 0
-    PARA i DESDE 0 HASTA TAMAÑO(ListaNotas) - 1 HACER
-        Suma = Suma + ListaNotas[i]
-    FIN_PARA
-    Promedio = Suma / TAMAÑO(ListaNotas)
-    IMPRIMIR "El promedio general es: " + Promedio
-FIN_SUBRUTINA
-
-// SUBRUTINA DE APILAR (PUSH)
-SUBRUTINA Subrutina_APILAR(Pila, Elemento)
-    AGREGAR(Pila, Elemento) // PUSH: Agrega al final de la lista
-FIN_SUBRUTINA
-
-// SUBRUTINA DE MOSTRAR HISTORIAL (Avance 5: LIFO)
-SUBRUTINA Subrutina_Mostrar_Historial(Pila)
-    IMPRIMIR "--- Historial (LIFO) ---"
-    SI TAMAÑO(Pila) ES IGUAL A 0 ENTONCES
-        IMPRIMIR "El historial está vacío."
-        RETORNAR
-    FIN_SI
-    // Se recorre la pila inversamente para respetar el principio LIFO
-    PARA i DESDE TAMAÑO(Pila) - 1 HASTA 0 CON PASO -1 HACER
-        IMPRIMIR Pila[i]
-    FIN_PARA
-FIN_SUBRUTINA
-
-FIN
+# Ejecución del programa
+if __name__ == "__main__":
+    menu_principal()
