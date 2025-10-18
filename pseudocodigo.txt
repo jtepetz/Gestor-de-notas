@@ -1,29 +1,35 @@
 INICIO
-    // Inicialización de estructuras de datos (Listas, Pila, Cola)
-    Cursos = []          // Lista principal de cursos (Avance 2)
-    Notas = []           // Lista principal de notas (Avance 2)
-    Historial_Pila = []  // Pila (LIFO) para registrar acciones (Avance 5)
-    Revision_Cola = []   // Cola (FIFO) para cursos pendientes (Avance 5 - Uso opcional, se recomienda incluir)
-    Opcion = 0
-
-    LLAMAR Subrutina_APILAR(Historial_Pila, "Sistema iniciado") // Registro inicial en Pila
-
-    // Bucle principal: Mantiene el menú activo (Avance 1)
+    // --------------------------------------------------------------------
+    // DECLARACIÓN E INICIALIZACIÓN DE ESTRUCTURAS DE DATOS (Avance 2 y 5)
+    // --------------------------------------------------------------------
+    Cursos = []          // Lista principal de cursos (string)
+    Notas = []           // Lista principal de notas (numerico)
+    Historial_Pila = []  // Pila (LIFO) para registrar acciones (string)
+    Opcion = 0           // Variable para el control del menú (numerico)
+    
+    LLAMAR Subrutina_APILAR(Historial_Pila, "Sistema iniciado") // Registro inicial
+    
+    // --------------------------------------------------------------------
+    // BUCLE PRINCIPAL DEL MENÚ (Avance 1)
+    // --------------------------------------------------------------------
     MIENTRAS Opcion != 9 HACER 
-        IMPRIMIR "--- Gestor de Notas Académicas ---"
+        IMPRIMIR "==================================="
+        IMPRIMIR "     GESTOR DE NOTAS ACADÉMICAS"
+        IMPRIMIR "==================================="
         IMPRIMIR "1. Registrar nuevo curso y nota" 
         IMPRIMIR "2. Mostrar todas las notas"       
         IMPRIMIR "3. Calcular promedio general"     
-        IMPRIMIR "4. Actualizar nota de curso"      // Avance 3: Búsqueda Lineal
-        IMPRIMIR "5. Eliminar curso"                // Avance 4: Eliminación de Datos
-        IMPRIMIR "6. Ordenar notas (Burbuja)"       // Avance 5: Ordenamiento
-        IMPRIMIR "7. Ordenar notas (Inserción)"     // Avance 5: Ordenamiento
-        IMPRIMIR "8. Mostrar Historial (Pila)"      // Avance 5: Estructuras
+        IMPRIMIR "4. Actualizar nota de curso"      
+        IMPRIMIR "5. Eliminar curso"                
+        IMPRIMIR "6. Ordenar notas (Burbuja)"       
+        IMPRIMIR "7. Ordenar notas (Inserción)"     
+        IMPRIMIR "8. Mostrar Historial (Pila)"
         IMPRIMIR "9. Salir"
         IMPRIMIR "-----------------------------------"
+
         LEER Opcion
 
-        // Condicionales para cada opción
+        // Estructura Condicional para dirigir el flujo
         SI Opcion ES 1 ENTONCES
             LLAMAR Subrutina_Registrar_Nota(Cursos, Notas, Historial_Pila)
         SINO_SI Opcion ES 2 ENTONCES
@@ -48,111 +54,169 @@ INICIO
     FIN_MIENTRAS
 
 // --------------------------------------------------------------------
-// DEFINICIÓN DE SUBRUTINAS (Modularización)
+// DEFINICIÓN DE SUBRUTINAS FUNCIONALES
 // --------------------------------------------------------------------
 
-// SUBRUTINA DE REGISTRO (Avance 2 + Pila Avance 5)
+// SUBRUTINA DE REGISTRO (Avance 2)
 SUBRUTINA Subrutina_Registrar_Nota(ListaCursos, ListaNotas, PilaHistorial)
-    IMPRIMIR "Ingrese el nombre del curso:"
     LEER NombreCurso
-    IMPRIMIR "Ingrese la nota (0-100):"
     LEER NuevaNota
-    
-    SI NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
+    SI NuevaNota ES NUMERICA Y NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
         AGREGAR(ListaCursos, NombreCurso)
         AGREGAR(ListaNotas, NuevaNota)
         LLAMAR Subrutina_APILAR(PilaHistorial, "Registró " + NombreCurso) 
+        IMPRIMIR "Curso registrado."
+    SINO
+        IMPRIMIR "Error: Nota no válida."
     FIN_SI
 FIN_SUBRUTINA
 
-// SUBRUTINA DE ACTUALIZACIÓN (Avance 3 + Pila Avance 5)
+// SUBRUTINA DE ACTUALIZACIÓN (Avance 3: Búsqueda Lineal)
 SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas, PilaHistorial)
-    IMPRIMIR "Ingrese el curso a actualizar:"
     LEER NombreABuscar
+    Encontrado = FALSO
     i = 0 
-    MIENTRAS i < TAMAÑO(ListaCursos) HACER // Búsqueda Lineal
+    MIENTRAS i < TAMAÑO(ListaCursos) Y Encontrado ES FALSO HACER 
         SI ListaCursos[i] ES IGUAL A NombreABuscar ENTONCES
             LEER NuevaNota
-            SI NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
-                ListaNotas[i] = NuevaNota // Actualización
+            SI NuevaNota ES NUMERICA Y NuevaNota >= 0 Y NuevaNota <= 100 ENTONCES
+                ListaNotas[i] = NuevaNota // Actualización de datos
                 LLAMAR Subrutina_APILAR(PilaHistorial, "Actualizó nota de " + NombreABuscar)
+                IMPRIMIR "Nota actualizada."
+                Encontrado = VERDADERO
+            SINO
+                IMPRIMIR "Error: Nueva nota no válida."
             FIN_SI
-            RETORNAR 
         FIN_SI
         i = i + 1 
     FIN_MIENTRAS
-    IMPRIMIR "Curso no encontrado."
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Curso no encontrado."
+    FIN_SI
 FIN_SUBRUTINA
 
-// SUBRUTINA DE ELIMINACIÓN (Avance 4 + Pila Avance 5)
+// SUBRUTINA DE ELIMINACIÓN (Avance 4: Búsqueda Lineal + Pop)
 SUBRUTINA Subrutina_Eliminar_Curso(ListaCursos, ListaNotas, PilaHistorial)
-    IMPRIMIR "Ingrese el curso a eliminar:"
     LEER NombreAEliminar
+    Encontrado = FALSO
     i = 0 
-    MIENTRAS i < TAMAÑO(ListaCursos) HACER
+    MIENTRAS i < TAMAÑO(ListaCursos) Y Encontrado ES FALSO HACER
         SI ListaCursos[i] ES IGUAL A NombreAEliminar ENTONCES
             ELIMINAR_ELEMENTO(ListaCursos, i) 
-            ELIMINAR_ELEMENTO(ListaNotas, i)  
+            ELIMINAR_ELEMENTO(ListaNotas, i) // Eliminación sincronizada
             LLAMAR Subrutina_APILAR(PilaHistorial, "Eliminó " + NombreAEliminar)
-            RETORNAR
+            IMPRIMIR "Curso eliminado."
+            Encontrado = VERDADERO
         FIN_SI
         i = i + 1 
     FIN_MIENTRAS
-    IMPRIMIR "Curso no encontrado."
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Curso no encontrado."
+    FIN_SI
 FIN_SUBRUTINA
 
-// ALGORITMO DE ORDENAMIENTO POR BURBUJA (Avance 5)
+// --------------------------------------------------------------------
+// DEFINICIÓN DE SUBRUTINAS DE ORDENAMIENTO (Avance 5)
+// --------------------------------------------------------------------
+
+// ALGORITMO DE ORDENAMIENTO POR BURBUJA (O(n^2))
 SUBRUTINA Subrutina_Ordenar_Burbuja(ListaCursos, ListaNotas, PilaHistorial)
     n = TAMAÑO(ListaNotas)
+    SI n <= 1 ENTONCES
+        IMPRIMIR "No hay suficientes datos para ordenar."
+        RETORNAR
+    FIN_SI
     PARA i DESDE 0 HASTA n-2 HACER
         PARA j DESDE 0 HASTA n-2-i HACER
             SI ListaNotas[j] > ListaNotas[j+1] ENTONCES
-                // Intercambio de NOTAS y CURSOS en paralelo
-                INTERCAMBIAR(ListaNotas[j], ListaNotas[j+1])
-                INTERCAMBIAR(ListaCursos[j], ListaCursos[j+1])
+                // Swap de NOTAS
+                AuxNota = ListaNotas[j]
+                ListaNotas[j] = ListaNotas[j+1]
+                ListaNotas[j+1] = AuxNota
+                // Swap de CURSOS (PARALELO)
+                AuxCurso = ListaCursos[j]
+                ListaCursos[j] = ListaCursos[j+1]
+                ListaCursos[j+1] = AuxCurso
             FIN_SI
         FIN_PARA
     FIN_PARA
     LLAMAR Subrutina_APILAR(PilaHistorial, "Ordenó por Burbuja")
+    IMPRIMIR "Notas ordenadas por Burbuja (Ascendente)."
 FIN_SUBRUTINA
 
-// ALGORITMO DE ORDENAMIENTO POR INSERCIÓN (Avance 5)
+// ALGORITMO DE ORDENAMIENTO POR INSERCIÓN (O(n^2))
 SUBRUTINA Subrutina_Ordenar_Insercion(ListaCursos, ListaNotas, PilaHistorial)
     n = TAMAÑO(ListaNotas)
+    SI n <= 1 ENTONCES
+        IMPRIMIR "No hay suficientes datos para ordenar."
+        RETORNAR
+    FIN_SI
     PARA i DESDE 1 HASTA n-1 HACER
         ClaveNota = ListaNotas[i]
         ClaveCurso = ListaCursos[i]
         j = i - 1
         
+        // Mueve elementos de la sublista ordenada que son mayores que la clave
         MIENTRAS j >= 0 Y ListaNotas[j] > ClaveNota HACER
-            ListaNotas[j+1] = ListaNotas[j]
-            ListaCursos[j+1] = ListaCursos[j]
+            ListaNotas[j + 1] = ListaNotas[j]
+            ListaCursos[j + 1] = ListaCursos[j] // Desplazamiento paralelo
             j = j - 1
         FIN_MIENTRAS
-        ListaNotas[j+1] = ClaveNota
-        ListaCursos[j+1] = ClaveCurso
+        
+        // Inserta la clave en su posición correcta
+        ListaNotas[j + 1] = ClaveNota
+        ListaCursos[j + 1] = ClaveCurso // Inserción paralela
     FIN_PARA
     LLAMAR Subrutina_APILAR(PilaHistorial, "Ordenó por Inserción")
+    IMPRIMIR "Notas ordenadas por Inserción (Ascendente)."
 FIN_SUBRUTINA
 
-// OPERACIONES DE PILA (Avance 5)
-SUBRUTINA Subrutina_APILAR(Pila, Elemento)
-    AGREGAR(Pila, Elemento) 
-FIN_SUBRUTINA
+// --------------------------------------------------------------------
+// DEFINICIÓN DE SUBRUTINAS DE SOPORTE Y LECTURA
+// --------------------------------------------------------------------
 
-SUBRUTINA Subrutina_Mostrar_Historial(PilaHistorial)
-    // Lógica para iterar e imprimir el contenido de la Pila
+// SUBRUTINA DE VISUALIZACIÓN (Avance 2)
+SUBRUTINA Subrutina_Mostrar_Notas(ListaCursos, ListaNotas)
+    IMPRIMIR "--- Listado de Cursos ---"
+    SI TAMAÑO(ListaCursos) ES IGUAL A 0 ENTONCES
+        IMPRIMIR "No hay cursos registrados."
+        RETORNAR
+    FIN_SI
+    PARA i DESDE 0 HASTA TAMAÑO(ListaCursos) - 1 HACER
+        IMPRIMIR "Curso: " + ListaCursos[i] + " | Nota: " + ListaNotas[i]
+    FIN_PARA
 FIN_SUBRUTINA
 
 // SUBRUTINA DE PROMEDIO (Avance 2)
 SUBRUTINA Subrutina_Calcular_Promedio(ListaNotas)
-    // Lógica de suma y división
+    SI TAMAÑO(ListaNotas) ES IGUAL A 0 ENTONCES
+        IMPRIMIR "No hay notas para calcular promedio."
+        RETORNAR
+    FIN_SI
+    Suma = 0
+    PARA i DESDE 0 HASTA TAMAÑO(ListaNotas) - 1 HACER
+        Suma = Suma + ListaNotas[i]
+    FIN_PARA
+    Promedio = Suma / TAMAÑO(ListaNotas)
+    IMPRIMIR "El promedio general es: " + Promedio
 FIN_SUBRUTINA
 
-// SUBRUTINA DE MOSTRAR NOTAS (Avance 2)
-SUBRUTINA Subrutina_Mostrar_Notas(ListaCursos, ListaNotas)
-    // Lógica de iteración e impresión
+// SUBRUTINA DE APILAR (PUSH)
+SUBRUTINA Subrutina_APILAR(Pila, Elemento)
+    AGREGAR(Pila, Elemento) // PUSH: Agrega al final de la lista
+FIN_SUBRUTINA
+
+// SUBRUTINA DE MOSTRAR HISTORIAL (Avance 5: LIFO)
+SUBRUTINA Subrutina_Mostrar_Historial(Pila)
+    IMPRIMIR "--- Historial (LIFO) ---"
+    SI TAMAÑO(Pila) ES IGUAL A 0 ENTONCES
+        IMPRIMIR "El historial está vacío."
+        RETORNAR
+    FIN_SI
+    // Se recorre la pila inversamente para respetar el principio LIFO
+    PARA i DESDE TAMAÑO(Pila) - 1 HASTA 0 CON PASO -1 HACER
+        IMPRIMIR Pila[i]
+    FIN_PARA
 FIN_SUBRUTINA
 
 FIN
-
