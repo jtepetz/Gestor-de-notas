@@ -1,0 +1,25 @@
+INICIO
+    // Inicialización de listas (uso de listas)
+    Cursos = [] 
+    Notas = []  
+    Opcion = 0
+
+    MIENTRAS Opcion != 6 HACER // El menú ahora tiene 6 opciones
+        IMPRIMIR "--- Gestor de Notas Académicas ---"
+        IMPRIMIR "1. Registrar nuevo curso y nota" 
+        IMPRIMIR "2. Mostrar todas las notas"       
+        IMPRIMIR "3. Calcular promedio general"     
+        IMPRIMIR "4. Actualizar nota de curso"      // Avance 3
+        IMPRIMIR "5. Eliminar curso"              // NUEVA OPCIÓN (Avance 4)
+        IMPRIMIR "6. Salir"                       // Opción de salida
+        IMPRIMIR "-----------------------------------"
+        LEER Opcion
+
+        SI Opcion ES 5 ENTONCES
+            // Implementando Modularización: se llama a una función/subrutina
+            LLAMAR Subrutina_Eliminar_Curso(Cursos, Notas) 
+        SINO_SI Opcion ES ... ENTONCES
+            // Otras opciones
+        FIN_SI
+    FIN_MIENTRAS
+FIN
