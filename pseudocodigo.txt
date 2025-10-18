@@ -1,42 +1,124 @@
-# Diseño del menú principal
-
-Estructura del menú:
-1. Se mostrará un título y una lista de opciones numeradas (mínimo 5).
-2. El usuario elegirá una opción escribiendo un número.
-3. Un bucle repetitivo mantendrá el menú activo hasta que el usuario seleccione "Salir".
-4. Cada opción estará controlada por condicionales (SI / SINO SI / SINO).
-5. Por ahora, las acciones se representarán con marcadores de posición <acción>, que luego se reemplazarán con la lógica en Python.
-
-Pseudocódigo:
-
 INICIO
+    // Inicialización de estructuras de datos (Listas)
+    Cursos = []   // Lista para nombres de cursos
+    Notas = []    // Lista para notas asociadas
+    Opcion = 0
 
-    MIENTRAS VERDADERO HACER
-        IMPRIMIR "=============================="
-        IMPRIMIR "  GESTOR DE NOTAS ACADÉMICAS  "
-        IMPRIMIR "=============================="
-        IMPRIMIR "1. Registrar nuevo curso y nota"
-        IMPRIMIR "2. Mostrar todas las notas"
-        IMPRIMIR "3. Calcular promedio general"
-        IMPRIMIR "4. Buscar nota de un curso"
+    // Bucle principal: Mantiene el menú activo (Avance 1)
+    MIENTRAS Opcion != 5 HACER 
+        IMPRIMIR "--- Gestor de Notas Académicas ---"
+        IMPRIMIR "1. Registrar nuevo curso y nota" 
+        IMPRIMIR "2. Mostrar todas las notas"       
+        IMPRIMIR "3. Calcular promedio general"     
+        IMPRIMIR "4. Actualizar nota de curso"      // Avance 3: Búsqueda y Actualización
         IMPRIMIR "5. Salir"
-        IMPRIMIR "Seleccione una opción: "
-        LEER opcion
+        IMPRIMIR "-----------------------------------"
+        LEER Opcion
 
-        SI opcion = 1 ENTONCES
-            <acción registrar curso y nota>
-        SINO SI opcion = 2 ENTONCES
-            <acción mostrar todas las notas>
-        SINO SI opcion = 3 ENTONCES
-            <acción calcular promedio>
-        SINO SI opcion = 4 ENTONCES
-            <acción buscar nota de un curso>
-        SINO SI opcion = 5 ENTONCES
+        // Condicionales para cada opción
+        SI Opcion ES 1 ENTONCES
+            LLAMAR Subrutina_Registrar_Nota(Cursos, Notas)
+        SINO_SI Opcion ES 2 ENTONCES
+            LLAMAR Subrutina_Mostrar_Notas(Cursos, Notas)
+        SINO_SI Opcion ES 3 ENTONCES
+            LLAMAR Subrutina_Calcular_Promedio(Notas)
+        SINO_SI Opcion ES 4 ENTONCES
+            LLAMAR Subrutina_Actualizar_Nota(Cursos, Notas) // Llama a la lógica de Avance 3
+        SINO_SI Opcion ES 5 ENTONCES
             IMPRIMIR "Saliendo del sistema..."
-            SALIR DEL BUCLE
         SINO
-            IMPRIMIR "Opción no válida, intente de nuevo."
+            IMPRIMIR "Opción no válida."
         FIN_SI
     FIN_MIENTRAS
+
+// --------------------------------------------------------------------
+// DEFINICIÓN DE SUBRUTINAS (Funciones)
+// --------------------------------------------------------------------
+
+// SUBRUTINA DE REGISTRO (Avance 2)
+SUBRUTINA Subrutina_Registrar_Nota(ListaCursos, ListaNotas)
+    IMPRIMIR "Ingrese el nombre del curso:"
+    LEER NombreCurso
+    IMPRIMIR "Ingrese la nota (0-100):"
+    LEER NuevaNota
+    
+    // Validación de datos (Uso de condicional)
+    SI NuevaNota ES MAYOR O IGUAL QUE 0 Y NuevaNota ES MENOR O IGUAL QUE 100 ENTONCES
+        AGREGAR(ListaCursos, NombreCurso)
+        AGREGAR(ListaNotas, NuevaNota)
+        IMPRIMIR "Curso registrado exitosamente."
+    SINO
+        IMPRIMIR "Error: La nota ingresada no es válida."
+    FIN_SI
+FIN_SUBRUTINA
+
+
+// SUBRUTINA DE ACTUALIZACIÓN (Avance 3: Búsqueda Lineal y Actualización)
+SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas)
+    IMPRIMIR "Ingrese el nombre del curso a actualizar:"
+    LEER NombreABuscar
+
+    Encontrado = FALSO
+    i = 0 // Contador/Índice
+
+    // Búsqueda Lineal: recorre toda la lista (Uso de bucle)
+    MIENTRAS i < TAMAÑO(ListaCursos) HACER
+        SI ListaCursos[i] ES IGUAL A NombreABuscar ENTONCES
+            Encontrado = VERDADERO
+            
+            IMPRIMIR "Curso encontrado. Nota actual: ", ListaNotas[i]
+            IMPRIMIR "Ingrese la nueva nota (0-100):"
+            LEER NuevaNota
+            
+            // Validación
+            SI NuevaNota ES MAYOR O IGUAL QUE 0 Y NuevaNota ES MENOR O IGUAL QUE 100 ENTONCES
+                ListaNotas[i] = NuevaNota // Actualización del dato
+                IMPRIMIR "Nota de ", NombreABuscar, " actualizada exitosamente."
+            SINO
+                IMPRIMIR "Error: La nota ingresada no es válida. No se realizaron cambios."
+            FIN_SI
+            ROMPER MIENTRAS 
+        FIN_SI
+        i = i + 1 // Incremento del contador
+    FIN_MIENTRAS
+
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Error: El curso '", NombreABuscar, "' no fue encontrado."
+    FIN_SI
+FIN_SUBRUTINA
+
+
+// SUBRUTINA DE PROMEDIO (Avance 2)
+SUBRUTINA Subrutina_Calcular_Promedio(ListaNotas)
+    SI TAMAÑO(ListaNotas) ES 0 ENTONCES
+        IMPRIMIR "No hay notas para calcular promedio."
+        RETORNAR
+    FIN_SI
+    
+    Suma = 0
+    Contador = 0 
+    
+    // Uso de bucle para sumar
+    PARA i DESDE 0 HASTA TAMAÑO(ListaNotas) - 1 HACER
+        Suma = Suma + ListaNotas[i]
+        Contador = Contador + 1
+    FIN_PARA
+    
+    Promedio = Suma / Contador
+    IMPRIMIR "El promedio general es: ", Promedio
+FIN_SUBRUTINA
+
+
+// SUBRUTINA DE MOSTRAR NOTAS (Avance 2)
+SUBRUTINA Subrutina_Mostrar_Notas(ListaCursos, ListaNotas)
+    SI TAMAÑO(ListaCursos) ES 0 ENTONCES
+        IMPRIMIR "No hay cursos registrados."
+        RETORNAR
+    FIN_SI
+    
+    PARA i DESDE 0 HASTA TAMAÑO(ListaCursos) - 1 HACER
+        IMPRIMIR "Curso: ", ListaCursos[i], ", Nota: ", ListaNotas[i]
+    FIN_PARA
+FIN_SUBRUTINA
 
 FIN
