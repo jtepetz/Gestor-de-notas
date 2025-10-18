@@ -5,13 +5,14 @@ INICIO
     Opcion = 0
 
     // Bucle principal: Mantiene el menú activo (Avance 1)
-    MIENTRAS Opcion != 5 HACER 
+    MIENTRAS Opcion != 6 HACER // Ahora el menú sale con la opción 6
         IMPRIMIR "--- Gestor de Notas Académicas ---"
         IMPRIMIR "1. Registrar nuevo curso y nota" 
         IMPRIMIR "2. Mostrar todas las notas"       
         IMPRIMIR "3. Calcular promedio general"     
         IMPRIMIR "4. Actualizar nota de curso"      // Avance 3: Búsqueda y Actualización
-        IMPRIMIR "5. Salir"
+        IMPRIMIR "5. Eliminar curso"                // NUEVA OPCIÓN (Avance 4)
+        IMPRIMIR "6. Salir"
         IMPRIMIR "-----------------------------------"
         LEER Opcion
 
@@ -23,8 +24,10 @@ INICIO
         SINO_SI Opcion ES 3 ENTONCES
             LLAMAR Subrutina_Calcular_Promedio(Notas)
         SINO_SI Opcion ES 4 ENTONCES
-            LLAMAR Subrutina_Actualizar_Nota(Cursos, Notas) // Llama a la lógica de Avance 3
+            LLAMAR Subrutina_Actualizar_Nota(Cursos, Notas) // Lógica de Avance 3
         SINO_SI Opcion ES 5 ENTONCES
+            LLAMAR Subrutina_Eliminar_Curso(Cursos, Notas)  // Lógica de Avance 4
+        SINO_SI Opcion ES 6 ENTONCES
             IMPRIMIR "Saliendo del sistema..."
         SINO
             IMPRIMIR "Opción no válida."
@@ -32,7 +35,7 @@ INICIO
     FIN_MIENTRAS
 
 // --------------------------------------------------------------------
-// DEFINICIÓN DE SUBRUTINAS (Funciones)
+// DEFINICIÓN DE SUBRUTINAS (Funciones y Modularización - Avance 4)
 // --------------------------------------------------------------------
 
 // SUBRUTINA DE REGISTRO (Avance 2)
@@ -42,7 +45,6 @@ SUBRUTINA Subrutina_Registrar_Nota(ListaCursos, ListaNotas)
     IMPRIMIR "Ingrese la nota (0-100):"
     LEER NuevaNota
     
-    // Validación de datos (Uso de condicional)
     SI NuevaNota ES MAYOR O IGUAL QUE 0 Y NuevaNota ES MENOR O IGUAL QUE 100 ENTONCES
         AGREGAR(ListaCursos, NombreCurso)
         AGREGAR(ListaNotas, NuevaNota)
@@ -59,9 +61,8 @@ SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas)
     LEER NombreABuscar
 
     Encontrado = FALSO
-    i = 0 // Contador/Índice
+    i = 0 
 
-    // Búsqueda Lineal: recorre toda la lista (Uso de bucle)
     MIENTRAS i < TAMAÑO(ListaCursos) HACER
         SI ListaCursos[i] ES IGUAL A NombreABuscar ENTONCES
             Encontrado = VERDADERO
@@ -70,20 +71,48 @@ SUBRUTINA Subrutina_Actualizar_Nota(ListaCursos, ListaNotas)
             IMPRIMIR "Ingrese la nueva nota (0-100):"
             LEER NuevaNota
             
-            // Validación
             SI NuevaNota ES MAYOR O IGUAL QUE 0 Y NuevaNota ES MENOR O IGUAL QUE 100 ENTONCES
-                ListaNotas[i] = NuevaNota // Actualización del dato
+                ListaNotas[i] = NuevaNota // Actualización
                 IMPRIMIR "Nota de ", NombreABuscar, " actualizada exitosamente."
             SINO
-                IMPRIMIR "Error: La nota ingresada no es válida. No se realizaron cambios."
+                IMPRIMIR "Error: La nota ingresada no es válida."
             FIN_SI
             ROMPER MIENTRAS 
         FIN_SI
-        i = i + 1 // Incremento del contador
+        i = i + 1 
     FIN_MIENTRAS
 
     SI Encontrado ES FALSO ENTONCES
         IMPRIMIR "Error: El curso '", NombreABuscar, "' no fue encontrado."
+    FIN_SI
+FIN_SUBRUTINA
+
+
+// SUBRUTINA DE ELIMINACIÓN (Avance 4: Eliminación de datos)
+SUBRUTINA Subrutina_Eliminar_Curso(ListaCursos, ListaNotas)
+    IMPRIMIR "Ingrese el nombre del curso a eliminar:"
+    LEER NombreAEliminar
+
+    Encontrado = FALSO
+    i = 0 
+
+    // Búsqueda Lineal (similar a la actualización)
+    MIENTRAS i < TAMAÑO(ListaCursos) HACER
+        SI ListaCursos[i] ES IGUAL A NombreAEliminar ENTONCES
+            Encontrado = VERDADERO
+            
+            // Eliminación del elemento de ambas listas en la misma posición
+            ELIMINAR_ELEMENTO(ListaCursos, i) 
+            ELIMINAR_ELEMENTO(ListaNotas, i) 
+            
+            IMPRIMIR "El curso '", NombreAEliminar, "' ha sido eliminado exitosamente."
+            ROMPER MIENTRAS 
+        FIN_SI
+        i = i + 1 
+    FIN_MIENTRAS
+
+    SI Encontrado ES FALSO ENTONCES
+        IMPRIMIR "Error: El curso '", NombreAEliminar, "' no fue encontrado."
     FIN_SI
 FIN_SUBRUTINA
 
@@ -98,7 +127,6 @@ SUBRUTINA Subrutina_Calcular_Promedio(ListaNotas)
     Suma = 0
     Contador = 0 
     
-    // Uso de bucle para sumar
     PARA i DESDE 0 HASTA TAMAÑO(ListaNotas) - 1 HACER
         Suma = Suma + ListaNotas[i]
         Contador = Contador + 1
