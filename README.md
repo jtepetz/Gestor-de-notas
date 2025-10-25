@@ -76,7 +76,16 @@ Este proyecto se desarrolló como parte del curso de Programación, aplicando lo
 
 ---
 
-GestorNotas/ ├── gestor_notas.py # 🐍 Código fuente principal del sistema. ├── pseudocodigo.txt # 📝 Pseudocódigo general de los algoritmos. ├── README.md # 📄 Descripción, objetivos y reflexión personal del proyecto. ├── manual_tecnico.pdf # 🛠️ Documentación detallada de la estructura y algoritmos. ├── manual_usuario.pdf # 📚 Guía paso a paso para la ejecución del sistema. └── evidencia/ # 📸 (Opcional) Capturas de pantalla de la ejecución.
+## 🧾 Estructura del Repositorio
+
+El proyecto `GestorNotas/` contiene los siguientes archivos principales:
+
+* `gestor_notas.py`: 🐍 Código fuente principal del sistema.
+* `pseudocodigo.txt`: 📝 Pseudocódigo general de los algoritmos implementados.
+* `README.md`: 📄 Descripción del proyecto, objetivos, instrucciones y reflexión personal.
+* `manual_tecnico.pdf`: 🛠️ Documentación detallada de la estructura interna y los algoritmos utilizados.
+* `manual_usuario.pdf`: 📚 Guía paso a paso para la ejecución y uso del sistema.
+* `evidencia/`: 📸 (Opcional) Carpeta destinada a las capturas de pantalla de la ejecución.
 
 ---
 
@@ -106,10 +115,11 @@ También implementaría una versión con **interfaz gráfica simple** para mejor
 ---
 
 ## 👨‍💻 Autor
-Joshua JC
+Josué Elías Tepet Zet
 
 Proyecto final de Programación – 2025
 
 **Repositorio oficial:** [https://github.com/jtepetz/Gestor-de-notas](https://github.com/jtepetz/Gestor-de-notas)
+
 
 
