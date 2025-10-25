@@ -1,220 +1,196 @@
-# --------------------------------------------------------------------
-# GESTOR DE NOTAS ACADÉMICAS - PROTOTIPO FUNCIONAL COMPLETO (AVANCE 06)
-# Implementación unificada y final de Avances 1, 2, 3, 4 y 5
-# --------------------------------------------------------------------
+INICIO
+    // GESTOR DE NOTAS ACADÉMICAS
+    // Autor: Josué Elías Tepet Zet
+    // Descripción: Sistema en consola para registrar, visualizar y analizar cursos y notas.
+    // Este pseudocódigo describe el funcionamiento general del programa principal.
 
-# Variables Globales (Estructuras de datos)
-cursos = []      # Lista principal de cursos
-notas = []       # Lista principal para notas
-historial_pila = [] # Pila (LIFO) para registrar acciones
+    // Declaración de estructuras principales
+    cursos ← lista vacía
+    historial_cambios ← lista vacía    // (pila)
+    cola_revision ← lista vacía         // (cola)
 
-# =====================================================
-# FUNCIONES DE AYUDA Y ESTRUCTURAS DE DATOS (Avance 5)
-# =====================================================
+    // MENÚ PRINCIPAL
+    MIENTRAS VERDADERO HACER
+        IMPRIMIR "====== GESTOR DE NOTAS ACADÉMICAS ======"
+        IMPRIMIR "1. Registrar nuevo curso"
+        IMPRIMIR "2. Mostrar todos los cursos y notas"
+        IMPRIMIR "3. Calcular promedio general"
+        IMPRIMIR "4. Contar cursos aprobados y reprobados"
+        IMPRIMIR "5. Buscar curso por nombre (búsqueda lineal)"
+        IMPRIMIR "6. Actualizar nota de un curso"
+        IMPRIMIR "7. Eliminar un curso"
+        IMPRIMIR "8. Ordenar cursos por nota (burbuja)"
+        IMPRIMIR "9. Ordenar cursos por nombre (inserción)"
+        IMPRIMIR "10. Buscar curso por nombre (búsqueda binaria)"
+        IMPRIMIR "11. Simular cola de solicitudes de revisión"
+        IMPRIMIR "12. Mostrar historial de cambios (pila)"
+        IMPRIMIR "13. Salir"
+        IMPRIMIR "Seleccione una opción: "
+        LEER opcion
 
-def apilar_accion(pila, accion):
-    """Simula la operación PUSH (APILAR) para el historial."""
-    pila.append(accion)
-    
-def mostrar_historial(pila):
-    """Muestra el historial de acciones registrado en la Pila (LIFO)."""
-    print("\n--- Historial de Acciones (Pila - LIFO) ---")
-    if not pila:
-        print("El historial está vacío.")
-        return
-    
-    # Mostrar del último al primero (LIFO)
-    for accion in reversed(pila):
-        print(f"-> {accion}")
+        // OPCIONES DEL MENÚ
+        SI opcion = 1 ENTONCES
+            IMPRIMIR "Ingrese nombre del curso y nota."
+            LEER nombre, nota
+            SI nombre ≠ "" Y nota ENTRE 0 Y 100 ENTONCES
+                cursos.AGREGAR({nombre, nota})
+                IMPRIMIR "Curso registrado correctamente."
+            SINO
+                IMPRIMIR "Datos inválidos, intente de nuevo."
+            FIN_SI
 
+        SINO SI opcion = 2 ENTONCES
+            SI cursos.VACÍO ENTONCES
+                IMPRIMIR "No hay cursos registrados."
+            SINO
+                PARA i ← 1 HASTA cursos.LONGITUD HACER
+                    IMPRIMIR i, cursos[i].nombre, " - Nota: ", cursos[i].nota
+                FIN_PARA
+            FIN_SI
 
-# =====================================================
-# FUNCIONES CRUD Y PROMEDIO (Avances 2, 3 y 4)
-# =====================================================
+        SINO SI opcion = 3 ENTONCES
+            SI cursos.VACÍO ENTONCES
+                IMPRIMIR "No hay cursos registrados."
+            SINO
+                suma ← 0
+                PARA cada curso EN cursos HACER
+                    suma ← suma + curso.nota
+                FIN_PARA
+                promedio ← suma / cursos.LONGITUD
+                IMPRIMIR "Promedio general: ", promedio
+            FIN_SI
 
-def registrar_nota(cursos, notas, pila):
-    """Registra un nuevo curso y nota con validación."""
-    print("\n--- Registrar Curso ---")
-    nombre_curso = input("Nombre del curso: ")
-    try:
-        nueva_nota = float(input("Nota (0-100): "))
-        if 0 <= nueva_nota <= 100:
-            cursos.append(nombre_curso)
-            notas.append(nueva_nota)
-            print(f"Curso '{nombre_curso}' registrado.")
-            apilar_accion(pila, f"Registró {nombre_curso}") 
-        else:
-            print("Error: La nota debe estar entre 0 y 100.")
-    except ValueError:
-        print("Error: La nota debe ser un valor numérico.")
+        SINO SI opcion = 4 ENTONCES
+            aprobados ← 0
+            reprobados ← 0
+            PARA cada curso EN cursos HACER
+                SI curso.nota >= 60 ENTONCES
+                    aprobados ← aprobados + 1
+                SINO
+                    reprobados ← reprobados + 1
+                FIN_SI
+            FIN_PARA
+            IMPRIMIR "Aprobados: ", aprobados
+            IMPRIMIR "Reprobados: ", reprobados
 
-def mostrar_notas(cursos, notas):
-    """Muestra todos los cursos y sus notas."""
-    print("\n--- Cursos Registrados ---")
-    if not cursos:
-        print("No hay cursos registrados.")
-        return
-    for curso, nota in zip(cursos, notas):
-        print(f"Curso: {curso:<20} | Nota: {nota:.2f}")
+        SINO SI opcion = 5 ENTONCES
+            IMPRIMIR "Ingrese nombre del curso a buscar:"
+            LEER nombre_buscar
+            encontrado ← FALSO
+            PARA cada curso EN cursos HACER
+                SI nombre_buscar EN curso.nombre ENTONCES
+                    IMPRIMIR "Curso encontrado: ", curso.nombre, " - Nota: ", curso.nota
+                    encontrado ← VERDADERO
+                FIN_SI
+            FIN_PARA
+            SI NO encontrado ENTONCES
+                IMPRIMIR "Curso no encontrado."
+            FIN_SI
 
-def calcular_promedio(notas):
-    """Calcula y muestra el promedio general."""
-    if not notas:
-        print("No hay notas para calcular promedio.")
-        return
-    promedio = sum(notas) / len(notas)
-    print(f"\n--- Promedio General ---")
-    print(f"El promedio general es: {promedio:.2f}")
+        SINO SI opcion = 6 ENTONCES
+            LEER nombre
+            PARA cada curso EN cursos HACER
+                SI curso.nombre = nombre ENTONCES
+                    LEER nueva_nota
+                    historial_cambios.APILAR("Actualización de " + nombre)
+                    curso.nota ← nueva_nota
+                    IMPRIMIR "Nota actualizada."
+                FIN_SI
+            FIN_PARA
 
-def actualizar_nota(cursos, notas, pila):
-    """Busca un curso por nombre usando Búsqueda Lineal y permite actualizar su nota."""
-    print("\n--- Actualizar Nota ---")
-    nombre_a_buscar = input("Ingrese el nombre del curso a actualizar: ")
-    
-    encontrado = False
-    for i, curso in enumerate(cursos): 
-        if curso.lower() == nombre_a_buscar.lower():
-            print(f"Curso encontrado. Nota actual: {notas[i]}")
-            try:
-                nueva_nota = float(input("Ingrese la nueva nota (0-100): "))
-                if 0 <= nueva_nota <= 100:
-                    notas[i] = nueva_nota # Actualización de datos
-                    print(f"Nota de '{nombre_a_buscar}' actualizada a {nueva_nota}.")
-                    apilar_accion(pila, f"Actualizó nota de {nombre_a_buscar}")
-                else:
-                    print("Error: La nota ingresada no es válida.")
-            except ValueError:
-                print("Error: La nota debe ser un valor numérico.")
-            encontrado = True
-            break # Sale del bucle al encontrar
-            
-    if not encontrado:
-        print(f"Error: El curso '{nombre_a_buscar}' no fue encontrado.")
+        SINO SI opcion = 7 ENTONCES
+            LEER nombre
+            PARA cada curso EN cursos HACER
+                SI curso.nombre = nombre ENTONCES
+                    IMPRIMIR "¿Desea eliminar este curso? (s/n)"
+                    LEER confirmar
+                    SI confirmar = "s" ENTONCES
+                        historial_cambios.APILAR("Eliminación de " + nombre)
+                        cursos.ELIMINAR(curso)
+                        IMPRIMIR "Curso eliminado."
+                    FIN_SI
+                FIN_SI
+            FIN_PARA
 
-def eliminar_curso(cursos, notas, pila):
-    """Busca un curso y lo elimina del registro con eliminación sincronizada."""
-    print("\n--- Eliminar Curso ---")
-    nombre_a_eliminar = input("Ingrese el nombre del curso a eliminar: ")
-    
-    encontrado = False
-    for i, curso in enumerate(cursos):
-        if curso.lower() == nombre_a_eliminar.lower():
-            # Eliminación de las dos listas en el mismo índice (pop)
-            cursos.pop(i)
-            notas.pop(i)
-            print(f"El curso '{nombre_a_eliminar}' ha sido eliminado exitosamente.")
-            apilar_accion(pila, f"Eliminó {nombre_a_eliminar}")
-            encontrado = True
-            break # Sale del bucle al encontrar
-            
-    if not encontrado:
-        print(f"Error: El curso '{nombre_a_eliminar}' no fue encontrado.")
+        SINO SI opcion = 8 ENTONCES
+            // ORDENAMIENTO BURBUJA POR NOTA (descendente)
+            PARA i ← 0 HASTA cursos.LONGITUD - 2 HACER
+                PARA j ← 0 HASTA cursos.LONGITUD - i - 2 HACER
+                    SI cursos[j].nota < cursos[j+1].nota ENTONCES
+                        INTERCAMBIAR cursos[j], cursos[j+1]
+                    FIN_SI
+                FIN_PARA
+            FIN_PARA
+            IMPRIMIR "Cursos ordenados por nota (descendente)."
 
-# =====================================================
-# FUNCIONES DE ORDENAMIENTO (Avance 5)
-# =====================================================
+        SINO SI opcion = 9 ENTONCES
+            // ORDENAMIENTO POR INSERCIÓN (alfabético)
+            PARA i ← 1 HASTA cursos.LONGITUD - 1 HACER
+                actual ← cursos[i]
+                j ← i - 1
+                MIENTRAS j >= 0 Y cursos[j].nombre > actual.nombre HACER
+                    cursos[j + 1] ← cursos[j]
+                    j ← j - 1
+                FIN_MIENTRAS
+                cursos[j + 1] ← actual
+            FIN_PARA
+            IMPRIMIR "Cursos ordenados por nombre."
 
-def ordenar_burbuja(cursos, notas, pila):
-    """Ordenamiento por Burbuja (Bubble Sort) con intercambio paralelo explícito."""
-    n = len(notas)
-    if n <= 1:
-        print("No hay suficientes elementos para ordenar.")
-        return
-        
-    for i in range(n - 1):
-        for j in range(0, n - i - 1):
-            if notas[j] > notas[j + 1]: # Comparación de notas
-                # Swap de NOTAS usando auxiliar (coherente con pseudocódigo)
-                aux_nota = notas[j]
-                notas[j] = notas[j + 1]
-                notas[j + 1] = aux_nota
-                
-                # Swap de CURSOS (PARALELO)
-                aux_curso = cursos[j]
-                cursos[j] = cursos[j + 1]
-                cursos[j + 1] = aux_curso
-                
-    print("\nNotas ordenadas (ascendente) por Burbuja.")
-    apilar_accion(pila, "Ordenó por Burbuja")
+        SINO SI opcion = 10 ENTONCES
+            // BÚSQUEDA BINARIA (requiere lista ordenada por nombre)
+            ordenar_por_nombre()
+            LEER nombre_buscar
+            inicio ← 0
+            fin ← cursos.LONGITUD - 1
+            encontrado ← FALSO
+            MIENTRAS inicio <= fin Y NO encontrado HACER
+                medio ← (inicio + fin) / 2
+                SI cursos[medio].nombre = nombre_buscar ENTONCES
+                    IMPRIMIR "Curso encontrado: ", cursos[medio].nombre, " - Nota: ", cursos[medio].nota
+                    encontrado ← VERDADERO
+                SINO SI cursos[medio].nombre < nombre_buscar ENTONCES
+                    inicio ← medio + 1
+                SINO
+                    fin ← medio - 1
+                FIN_SI
+            FIN_MIENTRAS
+            SI NO encontrado ENTONCES
+                IMPRIMIR "Curso no encontrado."
+            FIN_SI
 
-def ordenar_insercion(cursos, notas, pila):
-    """Ordenamiento por Inserción (Insertion Sort) con desplazamiento paralelo explícito."""
-    n = len(notas)
-    if n <= 1:
-        print("No hay suficientes elementos para ordenar.")
-        return
-        
-    for i in range(1, n):
-        clave_nota = notas[i]
-        clave_curso = cursos[i]
-        j = i - 1
-        
-        while j >= 0 and notas[j] > clave_nota:
-            # Desplazamiento de NOTAS
-            notas[j + 1] = notas[j]
-            # Desplazamiento de CURSOS (paralelo)
-            cursos[j + 1] = cursos[j]
-            j -= 1
-            
-        # Inserción de la clave en su posición correcta
-        notas[j + 1] = clave_nota
-        cursos[j + 1] = clave_curso
-        
-    print("\nNotas ordenadas (ascendente) por Inserción.")
-    apilar_accion(pila, "Ordenó por Inserción")
+        SINO SI opcion = 11 ENTONCES
+            IMPRIMIR "Ingrese cursos para revisión (escriba 'fin' para terminar):"
+            LEER curso
+            MIENTRAS curso ≠ "fin" HACER
+                cola_revision.ENCOLAR(curso)
+                LEER curso
+            FIN_MIENTRAS
+            MIENTRAS cola_revision.NO_VACÍA() HACER
+                actual ← cola_revision.DESCOLAR()
+                IMPRIMIR "Revisando: ", actual
+            FIN_MIENTRAS
+            IMPRIMIR "Solicitudes procesadas."
 
-# =====================================================
-# MENÚ PRINCIPAL (Avance 4 - Modularización)
-# =====================================================
+        SINO SI opcion = 12 ENTONCES
+            SI historial_cambios.VACÍO ENTONCES
+                IMPRIMIR "No hay historial."
+            SINO
+                IMPRIMIR "Historial de cambios (más reciente primero):"
+                MIENTRAS historial_cambios.NO_VACÍA() HACER
+                    cambio ← historial_cambios.DESAPILAR()
+                    IMPRIMIR cambio
+                FIN_MIENTRAS
+            FIN_SI
 
-def menu_principal():
-    """Bucle principal del programa que maneja la interacción con el usuario."""
-    opcion = 0
-    
-    # Registro inicial
-    apilar_accion(historial_pila, "Inicio del sistema")
-    
-    while opcion != 9:
-        print("\n===================================")
-        print("     GESTOR DE NOTAS ACADÉMICAS")
-        print("===================================")
-        print("1. Registrar nuevo curso y nota")
-        print("2. Mostrar todas las notas")
-        print("3. Calcular promedio general")
-        print("4. Actualizar nota de curso")
-        print("5. Eliminar curso")
-        print("6. Ordenar notas (Burbuja)")
-        print("7. Ordenar notas (Inserción)")
-        print("8. Mostrar Historial (Pila)")
-        print("9. Salir")
-        print("-----------------------------------")
-        
-        try:
-            opcion = int(input("Seleccione una opción: "))
-            
-            if opcion == 1:
-                registrar_nota(cursos, notas, historial_pila)
-            elif opcion == 2:
-                mostrar_notas(cursos, notas)
-            elif opcion == 3:
-                calcular_promedio(notas)
-            elif opcion == 4:
-                actualizar_nota(cursos, notas, historial_pila)
-            elif opcion == 5:
-                eliminar_curso(cursos, notas, historial_pila)
-            elif opcion == 6:
-                ordenar_burbuja(cursos, notas, historial_pila)
-            elif opcion == 7:
-                ordenar_insercion(cursos, notas, historial_pila)
-            elif opcion == 8:
-                mostrar_historial(historial_pila)
-            elif opcion == 9:
-                print("\nSaliendo del sistema...")
-            else:
-                print("Opción no válida. Intente de nuevo.")
-        except ValueError:
-            print("Entrada no válida. Por favor, ingrese un número.")
+        SINO SI opcion = 13 ENTONCES
+            IMPRIMIR "Gracias por usar el Gestor de Notas Académicas. ¡Hasta pronto!"
+            SALIR DEL BUCLE
 
-# Ejecución del programa
-if __name__ == "__main__":
-    menu_principal()
+        SINO
+            IMPRIMIR "Opción inválida. Intente nuevamente."
+        FIN_SI
+
+    FIN_MIENTRAS
+
+FIN
+
