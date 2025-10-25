@@ -91,8 +91,8 @@ El proyecto `GestorNotas/` contiene los siguientes archivos principales:
 
 ## 📘 Manuales del Sistema
 
-- [**Manual de Usuario**](./Manual%20de%20Usuario%20-%20Gestor%20de%20Notas%20Académicas.pdf)
-- [**Manual Técnico**](./Manual%20Técnico%20-%20Gestor%20de%20Notas%20Académicas.pdf)
+- [**Manual de Usuario**](./Manual-de-Usuario-Gestor-de-Notas-Academicas.pdf)
+- [**Manual Técnico**](./Manual-Tecnico-Gestor-de-Notas-Academicas.pdf)
 
 ---
 
@@ -120,6 +120,7 @@ Josué Elías Tepet Zet
 Proyecto final de Programación – 2025
 
 **Repositorio oficial:** [https://github.com/jtepetz/Gestor-de-notas](https://github.com/jtepetz/Gestor-de-notas)
+
 
 
 
