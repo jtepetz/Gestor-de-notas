@@ -1,39 +1,121 @@
-# 📚 Gestor de Notas Académicas
-
-El "Gestor de Notas Académicas" es un sistema de consola diseñado para facilitar el registro, consulta, modificación y administración de calificaciones. Su objetivo es proporcionar una herramienta sencilla y funcional para que estudiantes o académicos lleven un control ordenado de sus cursos, notas y rendimiento general.
-
-Este prototipo implementa diversas estructuras de datos y algoritmos fundamentales para demostrar la capacidad de gestión de información en un entorno básico.
+# 🎓 Gestor de Notas Académicas
 
 ---
 
-## 🎯 Requisitos del Sistema (Estado Final)
+## 📘 Descripción del proyecto
+El **Gestor de Notas Académicas** es un sistema desarrollado en **Python** que permite a los estudiantes registrar, analizar y organizar sus calificaciones de forma sencilla desde la consola.
 
-### 💻 Funcionalidades Implementadas (Avances 1-5)
+Su objetivo principal es facilitar el control del rendimiento académico mediante un menú interactivo que ofrece distintas operaciones, como registrar cursos, calcular promedios, ordenar notas, realizar búsquedas y simular estructuras de datos como **pilas y colas**.
 
-| ID | Funcionalidad | Estado | Descripción |
-| :--- | :--- | :--- | :--- |
-| **F1** | Registrar nuevo curso y nota. | **IMPLEMENTADO** | Añade nuevos registros a las listas paralelas. |
-| **F2** | Mostrar todas las notas. | **IMPLEMENTADO** | Muestra el contenido actual de las listas. |
-| **F3** | Calcular promedio general. | **IMPLEMENTADO** | Suma de notas dividido por el total de cursos. |
-| **F4** | Actualizar nota de curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para modificar un registro existente. |
-| **F5** | Eliminar curso. | **IMPLEMENTADO** | Utiliza Búsqueda Lineal para remover datos sincronizadamente. |
-| **F6** | Ordenar notas (Burbuja / Inserción). | **IMPLEMENTADO** | Implementación de dos algoritmos de complejidad O(n²) con intercambio paralelo de datos. |
-| **F7** | Mostrar Historial (Pila). | **IMPLEMENTADO** | Usa una estructura LIFO para auditar las últimas acciones. |
-
-### ⚙️ Requisitos No Funcionales
-
-* El sistema se ejecuta en **consola** utilizando el lenguaje **Python**.
-* No se utilizan librerías externas o frameworks.
-* El código está completamente **modularizado** en funciones (subrutinas).
-* Se emplean **listas paralelas**, **Pilas (LIFO)** y **Búsqueda Lineal**.
-* El diseño lógico completo se encuentra en el archivo **`pseudocodigo.txt`**.
+Este proyecto se desarrolló como parte del curso de Programación, aplicando los principios de modularidad, validaciones básicas y estructuras de datos lineales.
 
 ---
 
-## 🚀 Lógica Implementada (Resumen Técnico)
+## 🎯 Objetivos del sistema
+* Brindar una herramienta práctica para gestionar las calificaciones de distintos cursos.
+* Aplicar los conceptos de **listas, pilas, colas, búsqueda y ordenamiento** en un contexto funcional.
+* Fomentar el diseño estructurado y el uso de **funciones modulares** en Python.
+* Reforzar el pensamiento lógico a través de la implementación de algoritmos clásicos.
 
-El código final (`Prototipo - Python.py`) se basa en los siguientes principios:
+---
 
-1.  **Estructura de Datos:** Uso de **Listas Paralelas** (`cursos` y `notas`) para mantener la asociación, y una **Pila** (`historial_pila`) implementada con la lógica LIFO (Last-In, First-Out) para el registro de acciones.
-2.  **Búsqueda:** Todas las operaciones de modificación/eliminación (F4, F5) se basan en la **Búsqueda Lineal** (`enumerate` en Python) para obtener el índice preciso del elemento.
-3.  **Algoritmos de Ordenamiento:** Se implementaron los algoritmos **Burbuja** e **Inserción** para ordenar la lista de notas. Ambos garantizan el **intercambio paralelo** de datos entre `cursos` y `notas` en cada operación de *swap*, manteniendo la complejidad de tiempo en **O(n²)**.
+## ⚙️ Funcionalidades principales
+1.  Registrar nuevo curso y nota
+2.  Mostrar todos los cursos y notas
+3.  Calcular promedio general
+4.  Contar cursos aprobados y reprobados
+5.  Buscar curso por nombre (búsqueda lineal)
+6.  Actualizar nota de un curso
+7.  Eliminar un curso
+8.  Ordenar cursos por nota (burbuja)
+9.  Ordenar cursos por nombre (inserción)
+10. Buscar curso por nombre (búsqueda binaria)
+11. Simular cola de solicitudes de revisión
+12. Mostrar historial de cambios (pila)
+13. Salir del sistema
+
+---
+
+## 🧠 Estructuras de datos utilizadas
+* **Lista principal (`cursos`)** → almacena los cursos y sus notas.
+* **Pila (`historial_cambios`)** → guarda los cambios en orden inverso (LIFO - *Last In, First Out*).
+* **Cola (`cola_revision`)** → simula las solicitudes de revisión (FIFO - *First In, First Out*).
+
+---
+
+## 🧩 Algoritmos implementados
+* **Ordenamiento burbuja** → para ordenar los cursos por nota (descendente).
+* **Ordenamiento por inserción** → para ordenar los cursos alfabéticamente.
+* **Búsqueda lineal** → para encontrar coincidencias parciales en nombres de cursos.
+* **Búsqueda binaria** → para búsqueda exacta en lista ordenada.
+
+---
+
+## 💻 Requisitos del sistema
+* **Lenguaje:** Python 3.8 o superior
+* **Modo de ejecución:** Consola o terminal
+* **Librerías externas:** Ninguna (solo funciones nativas de Python)
+* **Sistema operativo:** Compatible con Windows, Linux y macOS
+
+---
+
+## ▶️ Instrucciones de ejecución
+1.  Descarga o clona el repositorio desde GitHub:
+    ```bash
+    git clone [https://github.com/jtepetz/Gestor-de-notas.git](https://github.com/jtepetz/Gestor-de-notas.git)
+    ```
+2.  Abre la carpeta del proyecto:
+    ```bash
+    cd Gestor-de-notas
+    ```
+3.  Ejecuta el programa desde la consola:
+    ```bash
+    python gestor_notas.py
+    ```
+4.  Usa el menú interactivo para navegar entre las opciones.
+
+---
+
+## 🧾 Estructura del repositorio
+
+GestorNotas/
+├── gestor_notas.py           # Código fuente principal del sistema
+├── pseudocodigo.txt          # Pseudocódigo general del programa
+├── README.md                 # Descripción y reflexión personal
+├── manual_tecnico.pdf        # Manual técnico del sistema
+├── manual_usuario.pdf        # Manual de uso del sistema
+└── evidencia/                # Capturas de ejecución (opcional)
+
+---
+
+### 📚 Documentación complementaria
+
+* **Manual Técnico:** [Ver Manual Técnico Completo (PDF)](manual_tecnico.pdf) 
+* **Manual de Usuario:** [Ver Manual de Usuario (PDF)](manual_usuario.pdf)
+
+---
+
+## 💭 Reflexión personal
+### ¿Qué aprendí con este proyecto?
+Aprendí a estructurar un programa **modular** aplicando funciones y estructuras de datos como listas, pilas y colas.
+
+También comprendí la importancia de planificar el **pseudocódigo** antes de codificar y de validar cada entrada para evitar errores en la ejecución.
+
+### ¿Qué fue lo más desafiante?
+El mayor reto fue integrar los algoritmos de **ordenamiento y búsqueda** de forma que funcionaran correctamente dentro del menú, sin usar librerías externas.
+
+Además, lograr que las estructuras de **pila y cola** se comportaran como en teoría, pero dentro de una lista en Python.
+
+### ¿Qué mejoraría si tuviera más tiempo?
+Me gustaría agregar **almacenamiento persistente** (guardado de datos en archivos `.txt` o `.csv`) y un sistema de reportes automáticos.
+
+También implementaría una versión con **interfaz gráfica simple** para mejorar la experiencia del usuario.
+
+---
+
+## 👨‍💻 Autor
+Joshua JC
+
+Proyecto final de Programación – 2025
+
+**Repositorio oficial:** [https://github.com/jtepetz/Gestor-de-notas](https://github.com/jtepetz/Gestor-de-notas)
